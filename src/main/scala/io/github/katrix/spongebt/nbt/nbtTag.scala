@@ -44,6 +44,60 @@ sealed abstract class NBTTag {
 	def getType: NBTType
 
 	/**
+		* Casts this to [[NBTByte]] if it is an [[NBTByte]]
+		*/
+	def asInstanceOfNBTByte: Option[NBTByte] = None
+
+	/**
+		* Casts this to [[NBTShort]] if it is an [[NBTShort]]
+		*/
+	def asInstanceOfNBTShort: Option[NBTShort] = None
+
+	/**
+		* Casts this to [[NBTInt]] if it is an [[NBTInt]]
+		*/
+	def asInstanceOfNBTInt: Option[NBTInt] = None
+
+	/**
+		* Casts this to [[NBTLong]] if it is an [[NBTLong]]
+		*/
+	def asInstanceOfNBTLong: Option[NBTLong] = None
+
+	/**
+		* Casts this to [[NBTFloat]] if it is an [[NBTFloat]]
+		*/
+	def asInstanceOfNBTFloat: Option[NBTFloat] = None
+
+	/**
+		* Casts this to [[NBTDouble]] if it is an [[NBTDouble]]
+		*/
+	def asInstanceOfNBTDouble: Option[NBTDouble] = None
+
+	/**
+		* Casts this to [[NBTByteArray]] if it is an [[NBTByteArray]]
+		*/
+	def asInstanceOfNBTByteArray: Option[NBTByteArray] = None
+
+	/**
+		* Casts this to [[NBTCompound]] if it is an [[NBTCompound]]
+		*/
+	def asInstanceOfNBTCompound: Option[NBTCompound] = None
+
+	/**
+		* Casts this to [[NBTString]] if it is an [[NBTString]]
+		*/
+	def asInstanceOfNBTString: Option[NBTString] = None
+
+	/**
+		* Casts this to [[NBTList]] if it is an [[NBTList]]
+		*/
+	def asInstanceOfNBTList: Option[NBTList] = None
+
+	/**
+		* Casts this to [[NBTIntArray]] if it is an [[NBTIntArray]]
+		*/
+	def asInstanceOfNBTIntArray: Option[NBTIntArray] = None
+
 	/**
 		* Returns the mojangson equivalent of this NBT.
 		*/
@@ -73,6 +127,8 @@ final case class NBTByte(value: Byte) extends NBTTag {
 
 	override def getType: NBTType = NBTType.TAG_BYTE
 
+	override def asInstanceOfNBTByte: Option[NBTByte] = Some(this)
+
 	override def toMojangson: String = s"${value}b"
 }
 
@@ -81,6 +137,8 @@ final case class NBTShort(value: Short) extends NBTTag {
 	override def copyTag: NBTTag = new NBTShort(value)
 
 	override def getType: NBTType = NBTType.TAG_SHORT
+
+	override def asInstanceOfNBTShort: Option[NBTShort] = Some(this)
 
 	override def toMojangson: String = s"${value}s"
 }
@@ -91,6 +149,8 @@ final case class NBTInt(value: Int) extends NBTTag {
 
 	override def getType: NBTType = NBTType.TAG_INT
 
+	override def asInstanceOfNBTInt: Option[NBTInt] = Some(this)
+
 	override def toMojangson: String = s"$value"
 }
 
@@ -99,6 +159,8 @@ final case class NBTLong(value: Long) extends NBTTag {
 	override def copyTag: NBTTag = new NBTLong(value)
 
 	override def getType: NBTType = NBTType.TAG_LONG
+
+	override def asInstanceOfNBTLong: Option[NBTLong] = Some(this)
 
 	override def toMojangson: String = s"${value}L"
 }
@@ -109,6 +171,8 @@ final case class NBTFloat(value: Float) extends NBTTag {
 
 	override def getType: NBTType = NBTType.TAG_FLOAT
 
+	override def asInstanceOfNBTFloat: Option[NBTFloat] = Some(this)
+
 	override def toMojangson: String = s"${value}f"
 }
 
@@ -117,6 +181,8 @@ final case class NBTDouble(value: Double) extends NBTTag {
 	override def copyTag: NBTTag = new NBTDouble(value)
 
 	override def getType: NBTType = NBTType.TAG_DOUBLE
+
+	override def asInstanceOfNBTDouble: Option[NBTDouble] = Some(this)
 
 	override def toMojangson: String = s"${value}d"
 }
@@ -131,6 +197,8 @@ final case class NBTByteArray(values: Array[Byte]) extends NBTTag {
 
 	override def getType: NBTType = NBTType.TAG_BYTE_ARRAY
 
+	override def asInstanceOfNBTByteArray: Option[NBTByteArray] = Some(this)
+
 	override def toMojangson: String = s"[${values.length} bytes]"
 }
 
@@ -141,12 +209,16 @@ final case class NBTString(value: String) extends NBTTag {
 
 	override def getType: NBTType = NBTType.TAG_STRING
 
+	override def asInstanceOfNBTString: Option[NBTString] = Some(this)
+
 	override def toMojangson: String = s""""$value""""
 }
 
 final class NBTList(val nbtType: NBTType) extends NBTTag {
 
 	private val values = new ArrayBuffer[NBTTag]()
+
+	override def asInstanceOfNBTList: Option[NBTList] = Some(this)
 
 	def get(i: Int): NBTTag = values(i)
 
@@ -247,6 +319,8 @@ final case class NBTCompound(values: mutable.Map[String, NBTTag]) extends NBTTag
 	def this() {
 		this(new mutable.LinkedHashMap[String, NBTTag]())
 	}
+
+	override def asInstanceOfNBTCompound: Option[NBTCompound] = Some(this)
 
 	def size: Int = values.size
 
@@ -422,6 +496,8 @@ final case class NBTIntArray(values: Array[Int]) extends NBTTag {
 	}
 
 	override def getType: NBTType = NBTType.TAG_INT_ARRAY
+
+	override def asInstanceOfNBTIntArray: Option[NBTIntArray] = Some(this)
 
 	override def toMojangson: String = {
 		val b: StringBuilder = new StringBuilder("[")
