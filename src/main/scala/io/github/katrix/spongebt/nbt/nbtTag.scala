@@ -27,7 +27,7 @@ import scala.collection.JavaConverters._
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-import org.spongepowered.api.data.{DataContainer, DataSerializable, MemoryDataContainer}
+import org.spongepowered.api.data.{DataContainer, DataSerializable}
 
 import io.github.katrix.spongebt.sponge.NBTTranslator
 
@@ -110,15 +110,15 @@ final case class NBTDouble(value: Double) extends NBTTag {
 
 final case class NBTByteArray(values: Array[Byte]) extends NBTTag {
 
-	def copyTag: NBTTag = {
+	override def copyTag: NBTTag = {
 		val bytes: Array[Byte] = new Array[Byte](values.length)
 		System.arraycopy(values, 0, bytes, 0, values.length)
 		new NBTByteArray(bytes)
 	}
 
-	def getType: NBTType = NBTType.TAG_BYTE_ARRAY
+	override def getType: NBTType = NBTType.TAG_BYTE_ARRAY
 
-	def toMojangson: String = s"[${values.length} bytes]"
+	override def toMojangson: String = s"[${values.length} bytes]"
 }
 
 final case class NBTString(value: String) extends NBTTag {
