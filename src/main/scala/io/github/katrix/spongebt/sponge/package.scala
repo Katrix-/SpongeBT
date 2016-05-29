@@ -18,23 +18,12 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.katrix.spongebt.nbt.parser
+
+package io.github.katrix.spongebt
 
 /**
-	* An exception thrown if the parsing of an mojangson string fails.
-	* @param message The message associated with the exception
-	* @param col The column that the exception was thrown at. Can be -1 if it is not known.
-	* @param line The line that the exception was thrown at. Can be -1 if it is not known.
-	* @param token The current token that was being processed when the exception was thrown. [[None]] of no token was available
+	* Different tools to interact better with Sponge.
 	*/
-class NBTParseException(
-	val message: String,
-	val col: Int = -1,
-	val line: Int = -1,
-	val token: Option[Token] = None)
-	extends Exception(message) {
+package object sponge {
 
-	def this(message: String, token: Token) {
-		this(message, token = Some(token))
-	}
 }

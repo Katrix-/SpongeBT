@@ -27,13 +27,30 @@ import org.spongepowered.api.data.{DataContainer, DataView}
 
 import io.github.katrix.spongebt.NBTStreamTools
 
+/**
+	* A [[DataFormat]] for NBT to make it easier to read and write [[DataView]]s to a stream
+	*/
 object NBTDataFormat extends DataFormat {
 
+	/**
+		* Write a [[DataView]] to an [[OutputStream]] as NBT
+		*
+		* The data is being written with as compressed with an empty root name
+		* @param output The stream to write to
+		* @param data The Data to write
+		*/
 	override def writeTo(output: OutputStream, data: DataView): Unit = {
 		val tag = NBTTranslator.translateData(data)
 		NBTStreamTools.writeTo(output, tag, "", compressed = true)
 	}
 
+	/**
+		* Reads a [[DataContainer]] from a [[InputStream]] containing NBT
+		*
+		* The data is assumed to be compressed
+		* @param input The stream to read from
+		* @return A [[DataContainer]] created from the [[InputStream]]
+		*/
 	override def readFrom(input: InputStream): DataContainer = {
 		val tag = NBTStreamTools.readFrom(input, compressed = true)
 		NBTTranslator.translateFrom(tag._2)

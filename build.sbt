@@ -9,3 +9,5 @@ crossPaths := false
 resolvers += "SpongePowered" at "https://repo.spongepowered.org/maven"
 
 libraryDependencies += "org.spongepowered" % "spongeapi" % "4.0.0"
+
+autoAPIMappings := true

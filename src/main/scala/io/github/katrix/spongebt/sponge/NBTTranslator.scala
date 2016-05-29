@@ -36,6 +36,9 @@ import com.google.common.collect.Lists
 import io.github.katrix.spongebt.nbt.{NBTByte, NBTByteArray, NBTCompound, NBTDouble, NBTFloat, NBTInt, NBTIntArray, NBTList, NBTLong, NBTShort, NBTString, NBTTag}
 import io.github.katrix.spongebt.nbt.NBTType._
 
+/**
+	* A [[DataTranslator]] for translating between [[DataView]] and [[NBTCompound]]
+	*/
 //Most code gotten from SpongeCommon
 object NBTTranslator extends DataTranslator[NBTCompound] {
 
@@ -52,8 +55,18 @@ object NBTTranslator extends DataTranslator[NBTCompound] {
 
 	override def translateContainerToData(node: NBTCompound, container: DataView): Unit = containerToCompound(container).merge(node)
 
+	/**
+		* Translate a [[DataView]] to an [[NBTCompound]]
+		* @param container The [[DataView]] to translate
+		* @return An [[NBTCompound]] made from the [[DataView]] passed in
+		*/
 	override def translateData(container: DataView): NBTCompound = containerToCompound(container)
 
+	/**
+		* Translates a [[NBTCompound]] to a [[DataContainer]]
+		* @param node The [[NBTCompound]] to translate
+		* @return A [[DataContainer]] made from the [[NBTCompound]] passed in
+		*/
 	override def translateFrom(node: NBTCompound): DataContainer = compoundToContainer(node)
 
 	private def containerToCompound(container: DataView): NBTCompound = {

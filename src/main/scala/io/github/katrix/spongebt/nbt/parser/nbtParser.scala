@@ -30,6 +30,12 @@ import io.github.katrix.spongebt.nbt.parser.NBTTokenType._
 
 object NBTParser {
 
+	/**
+		* Tries to parse a mojangson string into a [[NBTCompound]]
+		* @param string The string to parse
+		* @throws NBTParseException if at some point the parsing did not succeed
+		* @return A [[NBTCompound]] made from the parsed string
+		*/
 	@throws[NBTParseException]
 	def parse(string: String): NBTCompound = {
 		val trimmed = string.trim
@@ -185,6 +191,13 @@ object NBTParser {
 	private def testHasNest(tokens: Iterator[Token]): Unit = if(!tokens.hasNext) throw new NBTParseException("Unexpected end of string")
 }
 
+/**
+	* Represents a single piece of a mojangson string
+	* @param tokenType The type of the token
+	* @param value The value in the token, taken from the mojangson string
+	* @param col The column location of the token
+	* @param line The line location of the token
+	*/
 case class Token(
 	tokenType: NBTTokenType.TokenType,
 	value: String,

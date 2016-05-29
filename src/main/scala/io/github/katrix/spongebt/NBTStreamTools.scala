@@ -29,10 +29,21 @@ import scala.annotation.{switch, tailrec}
 import io.github.katrix.spongebt.nbt.NBTType._
 import io.github.katrix.spongebt.nbt.{NBTByte, NBTByteArray, NBTCompound, NBTDouble, NBTFloat, NBTInt, NBTIntArray, NBTList, NBTLong, NBTShort, NBTString, NBTTag, NBTType}
 
+/**
+	* Tools to read and write a [[NBTCompound]] to an stream.
+	*/
 object NBTStreamTools {
 
 	final val UTF8 = StandardCharsets.UTF_8
 
+	/**
+		* Writes an [[NBTCompound]] to an [[OutputStream]]
+		* @param stream The stream to write to
+		* @param nbt The tag to write out
+		* @param rootName The name of the root of the NBT. Usually not seen.
+		* @param compressed If the stream should be Gziped or not
+		* @throws IOException if anything goes wrong when writing the [[NBTCompound]]
+		*/
 	@throws[IOException]
 	def writeTo(stream: OutputStream, nbt: NBTCompound, rootName: String, compressed: Boolean): Unit = {
 		val newStream = new DataOutputStream(if(compressed) new BufferedOutputStream(new GZIPOutputStream(stream)) else stream)
@@ -46,6 +57,13 @@ object NBTStreamTools {
 		}
 	}
 
+	/**
+		* Reads an [[NBTCompound]] from an [[InputStream]]
+		* @param stream The stream to read from
+		* @param compressed If the [[NBTCompound]] to read from the stream is GZiped or not
+		* @throws IOException If anything goes wrong when reading the [[NBTCompound]]
+		* @return A tuple compromising of the [[NBTCompound]] read, as well as the root name
+		*/
 	@throws[IOException]
 	def readFrom(stream: InputStream, compressed: Boolean): (String, NBTCompound) = {
 		val newStream = new DataInputStream(if(compressed) new BufferedInputStream(new GZIPInputStream(stream)) else stream)

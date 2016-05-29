@@ -33,12 +33,25 @@ import io.github.katrix.spongebt.sponge.NBTTranslator
 
 sealed abstract class NBTTag {
 
+	/**
+		* Copies this tag and it's value.
+		*/
 	def copyTag: NBTTag
 
+	/**
+		* Gets the type of this tag. Can be used for casting.
+		*/
 	def getType: NBTType
 
+	/**
+	/**
+		* Returns the mojangson equivalent of this NBT.
+		*/
 	def toMojangson: String
 
+	/**
+		* Returns an indented, "pretty" mojangson equivalent of this NBT.
+		*/
 	def toIndentedMojangson: String = toMojangsonIndent(0)
 
 	protected[spongebt] def toMojangsonIndent(indention: Int): String = toMojangson
@@ -141,11 +154,19 @@ final class NBTList(val nbtType: NBTType) extends NBTTag {
 
 	def getAllJava: java.util.List[NBTTag] = values.toList.asJava
 
+	/**
+		* Adds a new tag to this list.
+		* The tag must be of the same [[NBTType]] as specified when the list was created.
+		*/
 	def add(value: NBTTag): Unit = {
 		require(value.getType == nbtType, "Tried to add wrong type to NBT list")
 		values += value
 	}
 
+	/**
+		* Adds many new tags to this list.
+		* The tags must be of the same [[NBTType]] as specified when the list was created.
+		*/
 	@varargs
 	def addAll(value: NBTTag*): Unit = {
 		value.foreach(add(_))
@@ -160,6 +181,9 @@ final class NBTList(val nbtType: NBTType) extends NBTTag {
 
 	def size: Int = values.size
 
+	/**
+		* Gets the [[NBTType]] of tags that this list will accept.
+		*/
 	def getListType: NBTType = nbtType
 
 	override def getType: NBTType = NBTType.TAG_LIST
@@ -260,6 +284,13 @@ final case class NBTCompound(values: mutable.Map[String, NBTTag]) extends NBTTag
 		case None => Optional.empty();
 	}
 
+	/**
+		* Tries to get a tag for the specific key, and if no tag is found, sets the
+		* the tag for key as the passed in tag.
+		* @param key The key to get/set for.
+		* @param tag The default tag to set and get if no tag for the key is found.
+		* @return The tag for the key if the tag already existed, or the passed in tag if it didn't exist.
+		*/
 	def getOrCreate(key: String, tag: NBTTag): NBTTag = values.get(key) match {
 		case Some(foundTag) => foundTag
 		case None =>
@@ -267,6 +298,9 @@ final case class NBTCompound(values: mutable.Map[String, NBTTag]) extends NBTTag
 			tag
 	}
 
+	/**
+		* Tries to get an [[UUID]] created with [[setUUID]].
+		*/
 	def getUUID(key: String): Option[UUID] = {
 		val optMost = get(s"${key}Most")
 		val optLeast = get(s"${key}Least")
@@ -299,6 +333,12 @@ final case class NBTCompound(values: mutable.Map[String, NBTTag]) extends NBTTag
 
 	def valuesJava: java.util.Map[String, NBTTag] = values.asJava
 
+	/**
+		* Tried to merge two [[NBTCompound]]s together.
+		*
+		* If both compounds have the same key, the other compound wins.
+		* The individual tags from the other compound is copied over.
+		*/
 	def merge(other: NBTCompound) {
 		for(entry <- other.values.seq) {
 			val tag = entry._2
