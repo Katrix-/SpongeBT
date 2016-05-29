@@ -324,32 +324,89 @@ final case class NBTCompound(values: mutable.Map[String, NBTTag]) extends NBTTag
 
 	def size: Int = values.size
 
-	def setTag(key: String, tag: NBTTag): Unit = values.put(key, tag)
+	/**
+		* Associates a specific tag to a specific key.
+		* @param key The key to bind to.
+		* @param tag The tag to set.
+		* @return An [[Option]] with the previous value of the used key, or None if the key was not already used.
+		*/
+	def setTag(key: String, tag: NBTTag): Option[NBTTag] = values.put(key, tag)
 
-	def setByte(key: String, value: Byte): Unit = setTag(key, new NBTByte(value))
+	/**
+		* Creates a [[NBTByte]] and sets it.
+		* @see See [[setTag]] for more info on return.
+		*/
+	def setByte(key: String, value: Byte): Option[NBTTag] = setTag(key, new NBTByte(value))
 
-	def setShort(key: String, value: Short): Unit = setTag(key, new NBTShort(value))
+	/**
+		* Creates a [[NBTShort]] and sets it.
+		* @see See [[setTag]] for more info on return.
+		*/
+	def setShort(key: String, value: Short): Option[NBTTag] = setTag(key, new NBTShort(value))
 
-	def setInt(key: String, value: Int): Unit = setTag(key, new NBTInt(value))
+	/**
+		* Creates a [[NBTInt]] and sets it.
+		* @see See [[setTag]] for more info on return.
+		*/
+	def setInt(key: String, value: Int): Option[NBTTag] = setTag(key, new NBTInt(value))
 
-	def setLong(key: String, value: Long): Unit = setTag(key, new NBTLong(value))
+	/**
+		* Creates a [[NBTLong]] and sets it.
+		* @see See [[setTag]] for more info on return.
+		*/
+	def setLong(key: String, value: Long): Option[NBTTag] = setTag(key, new NBTLong(value))
 
-	def setFloat(key: String, value: Float): Unit = setTag(key, new NBTFloat(value))
+	/**
+		* Creates a [[NBTFloat]] and sets it.
+		* @see See [[setTag]] for more info on return.
+		*/
+	def setFloat(key: String, value: Float): Option[NBTTag] = setTag(key, new NBTFloat(value))
 
-	def setDouble(key: String, value: Double): Unit = setTag(key, new NBTDouble(value))
+	/**
+		* Creates a [[NBTDouble]] and sets it.
+		* @see See [[setTag]] for more info on return.
+		*/
+	def setDouble(key: String, value: Double): Option[NBTTag] = setTag(key, new NBTDouble(value))
 
-	def setString(key: String, value: String): Unit = setTag(key, new NBTString(value))
+	/**
+		* Creates a [[NBTString]] and sets it.
+		* @see See [[setTag]] for more info on return.
+		*/
+	def setString(key: String, value: String): Option[NBTTag] = setTag(key, new NBTString(value))
 
-	def setByteArray(key: String, value: Array[Byte]): Unit = setTag(key, new NBTByteArray(value))
+	/**
+		* Creates a [[NBTByteArray]] and sets it.
+		* @see See [[setTag]] for more info on return.
+		*/
+	def setByteArray(key: String, value: Array[Byte]): Option[NBTTag] = setTag(key, new NBTByteArray(value))
 
-	def setIntArray(key: String, value: Array[Int]): Unit = setTag(key, new NBTIntArray(value))
+	/**
+		* Creates a [[NBTIntArray]] and sets it.
+		* @see See [[setTag]] for more info on return.
+		*/
+	def setIntArray(key: String, value: Array[Int]): Option[NBTTag] = setTag(key, new NBTIntArray(value))
 
-	def setUUID(key: String, value: UUID): Unit = {
-		setLong(key + "Most", value.getMostSignificantBits)
-		setLong(key + "Least", value.getLeastSignificantBits)
+	/**
+		* Creates two [[NBTLong]] tags from the UUID and sets the tag.
+		*
+		* The key of the two tags are key + "Most" for the most significant bits,
+		* and key + "Least" for the least significant bits.
+		*
+		* @return The same things goes for this as for [[setTag]], only here you have a [[Seq]] instead of an [[Option]]
+		*/
+	def setUUID(key: String, value: UUID): Seq[NBTTag] = {
+		val ret1 = setLong(key + "Most", value.getMostSignificantBits)
+		val ret2 = setLong(key + "Least", value.getLeastSignificantBits)
+
+		Seq(ret1, ret2).flatten
 	}
 
-	def setBoolean(key: String, value: Boolean): Unit = setByte(key, (if(value) 1 else 0).toByte)
+	/**
+		* Creates a [[NBTByte]] tag from the boolean and sets the tag.
+		* The byte is 1 if the boolean is true, and 0 if it's false.
+		* @see See [[setTag]] for more info on return.
+		*/
+	def setBoolean(key: String, value: Boolean): Option[NBTTag] = setByte(key, (if(value) 1 else 0).toByte)
 
 	def get(key: String): Option[NBTTag] = values.get(key)
 
@@ -401,7 +458,12 @@ final case class NBTCompound(values: mutable.Map[String, NBTTag]) extends NBTTag
 		}
 	}
 
-	def remove(key: String): Unit = values.remove(key)
+	/**
+		* Removed the value associated with a specific key.
+		* @param key The key to remove for.
+		* @return An [[Option]] with the previous value of the used key, or None if the key was not already used.
+		*/
+	def remove(key: String): Option[NBTTag] = values.remove(key)
 
 	def hasKey(key: String): Boolean = values.contains(key)
 
