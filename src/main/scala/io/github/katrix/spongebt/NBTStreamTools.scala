@@ -34,7 +34,7 @@ import io.github.katrix.spongebt.nbt.{NBTByte, NBTByteArray, NBTCompound, NBTDou
 	*/
 object NBTStreamTools {
 
-	final val UTF8 = StandardCharsets.UTF_8
+	private final val UTF8 = StandardCharsets.UTF_8
 
 	/**
 		* Writes an [[NBTCompound]] to an [[OutputStream]]

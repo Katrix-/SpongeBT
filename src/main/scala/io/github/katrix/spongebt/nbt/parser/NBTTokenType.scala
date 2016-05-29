@@ -22,7 +22,10 @@ package io.github.katrix.spongebt.nbt.parser
 
 import scala.util.matching.Regex
 
-protected[parser] object NBTTokenType {
+/**
+	* The many different token types that a mojangson string can be broken down into.
+	*/
+object NBTTokenType {
 
 	sealed abstract class TokenType(val regex: Regex, val group: String) {
 

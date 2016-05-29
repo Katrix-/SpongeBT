@@ -24,18 +24,18 @@ import java.lang.String.valueOf
 
 import org.slf4j.LoggerFactory
 
-object LogHelper {
+protected[spongebt] object LogHelper {
 
-	val logger = LoggerFactory.getLogger("SpongyNBT")
+	private val logger = LoggerFactory.getLogger("SpongyNBT")
 
-	def trace(any: Any) = logger.trace(valueOf(any))
+	protected[spongebt] def trace(any: Any) = logger.trace(valueOf(any))
 
-	def info(any: Any) = logger.info(valueOf(any))
+	protected[spongebt] def info(any: Any) = logger.info(valueOf(any))
 
-	def debug(any: Any) = logger.debug(valueOf(any))
+	protected[spongebt] def debug(any: Any) = logger.debug(valueOf(any))
 
-	def warn(any: Any) = logger.warn(valueOf(any))
+	protected[spongebt] def warn(any: Any) = logger.warn(valueOf(any))
 
-	def error(any: Any) = logger.error(valueOf(any))
+	protected[spongebt] def error(any: Any) = logger.error(valueOf(any))
 
 }

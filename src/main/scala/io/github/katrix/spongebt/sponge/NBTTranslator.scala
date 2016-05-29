@@ -43,13 +43,13 @@ import io.github.katrix.spongebt.nbt.NBTType._
 object NBTTranslator extends DataTranslator[NBTCompound] {
 
 	//Force Java boxed values so nothing gets mixed up
-	type Boolean = lang.Boolean
-	type Byte = lang.Byte
-	type Short = lang.Short
-	type Int = lang.Integer
-	type Long = lang.Long
-	type Float = lang.Float
-	type Double = lang.Double
+	private type Boolean = lang.Boolean
+	private type Byte = lang.Byte
+	private type Short = lang.Short
+	private type Int = lang.Integer
+	private type Long = lang.Long
+	private type Float = lang.Float
+	private type Double = lang.Double
 
 	private final val boolIdent = "$Boolean" //Stupid boolean
 
