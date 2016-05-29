@@ -244,6 +244,12 @@ final class NBTList(val nbtType: NBTType) extends NBTTag {
 		value.foreach(add(_))
 	}
 
+	/**
+		* Sets the value at the specific index to the passes in tag.
+		* The tag must be of the same [[NBTType]] as specified when the list was created.
+		* @throws IndexOutOfBoundsException If the index is not valid
+		*/
+	@throws[IndexOutOfBoundsException]
 	def set(value: NBTTag, i: Int): Unit = {
 		require(value.getType == nbtType, "Tried to add wrong type to NBT list")
 		values.update(i, value)
