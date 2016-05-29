@@ -53,7 +53,14 @@ object NBTTranslator extends DataTranslator[NBTCompound] {
 
 	private final val boolIdent = "$Boolean" //Stupid boolean
 
-	override def translateContainerToData(node: NBTCompound, container: DataView): Unit = containerToCompound(container).merge(node)
+	/**
+		* Translates a [[DataView]] to an existing [[NBTCompound]]
+		*
+		* If there are keys that match between both objects, then the keys in the [[NBTCompound]] will be overwritten
+		* @param node The existing [[NBTCompound]]
+		* @param container The [[DataView]] to translate from
+		*/
+	override def translateContainerToData(node: NBTCompound, container: DataView): Unit = node.merge(containerToCompound(container))
 
 	/**
 		* Translate a [[DataView]] to an [[NBTCompound]]
